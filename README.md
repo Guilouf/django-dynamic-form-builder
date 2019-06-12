@@ -23,10 +23,6 @@ INSTALLED_APPS = (
 DYNAMIC_FORM_BUILDER_TARGET = 'your_app'
 ```
 
-- In your `urls.py`:
-
-```python
-from django.urls import path, include
 
 urlpatterns = [
     # other urls patterns
