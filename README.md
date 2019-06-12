@@ -3,7 +3,38 @@ Django reusable app to create dynamic forms from the admin interface
 and save them into a specific model field
 
 # Installation
-`pip install .` from the root folder
+From the root folder:
+
+```
+pip install .
+```
+
+You have to do a bit of configuration from the host project:
+- In your `settings.py`:
+
+```python
+INSTALLED_APPS = (
+    # other apps
+    'dynamic_form_builder',
+)
+
+
+# Your app that you want to use dynamic-form-builder with
+DYNAMIC_FORM_BUILDER_TARGET = 'your_app'
+```
+
+- In your `urls.py`:
+
+```python
+from django.urls import path, include
+
+urlpatterns = [
+    # other urls patterns
+    path('some_string/', include('dynamic_form_builder.urls')),
+]
+```
+
+
 
 # Developement
 Be sure to push migrations after any change into the models, for
