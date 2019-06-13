@@ -10,7 +10,8 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='django-dynamic-form-builder',
     version='0.1',
-    packages=['dynamic_form_builder', 'dynamic_form_builder.migrations'],
+    include_package_data=True,  # necessary to include static data
+    packages=['dynamic_form_builder', 'dynamic_form_builder.migrations', 'dynamic_form_builder.static'],
     url='https://github.com/Guilouf/django-dynamic-form-builder',
     license='Apache License 2.0',
     author='Guillaume LEBRETON',
