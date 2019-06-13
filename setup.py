@@ -11,7 +11,8 @@ setup(
     name='django-dynamic-form-builder',
     version='0.1',
     include_package_data=True,  # necessary to include static data
-    packages=['dynamic_form_builder', 'dynamic_form_builder.migrations', 'dynamic_form_builder.static'],
+    packages=['dynamic_form_builder', 'dynamic_form_builder.migrations', 'dynamic_form_builder.static',
+              'dynamic_form_builder.templates', 'dynamic_form_builder.templatetags'],
     url='https://github.com/Guilouf/django-dynamic-form-builder',
     license='Apache License 2.0',
     author='Guillaume LEBRETON',
