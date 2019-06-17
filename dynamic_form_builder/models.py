@@ -15,6 +15,13 @@ def choice_limit():
 
 
 class FormBuilderField(models.ForeignKey):
+
+    def __init__(self, **kwargs):
+        """Sets default field's related model and deletion method"""
+        kwargs.setdefault('to', 'dynamic_form_builder.DescriptorTemplate')
+        kwargs.setdefault('on_delete', models.CASCADE)
+        super().__init__(**kwargs)
+
     def formfield(self, *, using=None, **kwargs):
         """Changes the default ForeignKey FormField to a custom one"""
         defaults = {'form_class': FormBuilderFormField}
