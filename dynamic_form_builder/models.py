@@ -5,12 +5,21 @@ from django.utils.translation import gettext as _
 from django.conf import settings
 
 import yaml
+from dynamic_form_builder.forms import FormBuilderFormField
 
 
 def choice_limit():
     """Get the 'DYNAMIC_FORM_BUILDER_TARGETS' constant from the settings file to display
     models from the targeted app"""
     return {'app_label': getattr(settings, 'DYNAMIC_FORM_BUILDER_TARGET', None)}
+
+
+class FormBuilderField(models.ForeignKey):
+    def formfield(self, *, using=None, **kwargs):
+        """Changes the default ForeignKey FormField to a custom one"""
+        defaults = {'form_class': FormBuilderFormField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
 
 
 class DescriptorTemplate(models.Model):
