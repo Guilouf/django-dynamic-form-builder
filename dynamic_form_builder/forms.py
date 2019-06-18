@@ -9,6 +9,13 @@ class FormBuilderFormField(forms.ModelChoiceField):
         attrs['onChange'] = 'getForm(this.value);'
         return attrs
 
+    def get_limit_choices_to(self):
+        """Allow the callable to have arguments, instead of the base django method"""
+        if tuple(self.limit_choices_to):
+            return self.limit_choices_to[0](*self.limit_choices_to[1])
+        else:
+            super().__init__(self)
+
 
 class TemplateForm(forms.Form):
     """Form that builds it up from a dictionary"""
