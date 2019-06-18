@@ -20,7 +20,17 @@ class FormBuilderField(models.ForeignKey):
         """Sets default field's related model and deletion method"""
         kwargs.setdefault('to', 'dynamic_form_builder.DescriptorTemplate')
         kwargs.setdefault('on_delete', models.CASCADE)
+        # because of makemigrations calling __init__ multiple times
+        limit_to_model = kwargs.get('limit_to_model', None)
+        kwargs.pop('limit_to_model', None)
+        kwargs.setdefault('limit_choices_to', (self.form_choice_limit, [limit_to_model]))
         super().__init__(**kwargs)
+
+    @staticmethod
+    def form_choice_limit(name):
+        """Limit the choice list displayed by the fields widget to template
+        with the type matching the parent model"""
+        return {'type': ContentType.objects.get(model=name)}
 
     def formfield(self, *, using=None, **kwargs):
         """Changes the default ForeignKey FormField to a custom one"""
