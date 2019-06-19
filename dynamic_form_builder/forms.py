@@ -14,7 +14,7 @@ class FormBuilderFormField(forms.ModelChoiceField):
         if tuple(self.limit_choices_to):
             return self.limit_choices_to[0](*self.limit_choices_to[1])
         else:
-            super().__init__(self)
+            super().get_limit_choices_to()
 
 
 class TemplateForm(forms.Form):

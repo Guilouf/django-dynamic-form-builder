@@ -26,6 +26,13 @@ class FormBuilderField(models.ForeignKey):
         kwargs.setdefault('limit_choices_to', (self.form_choice_limit, [limit_to_model]))
         super().__init__(**kwargs)
 
+    def get_limit_choices_to(self):
+        """Allow the callable to have arguments, instead of the base django method"""
+        if tuple(self.remote_field.limit_choices_to):
+            return self.remote_field.limit_choices_to[0](*self.remote_field.limit_choices_to[1])
+        else:
+            return super().get_limit_choices_to()
+
     @staticmethod
     def form_choice_limit(name):
         """Limit the choice list displayed by the fields widget to template
