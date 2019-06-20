@@ -17,7 +17,7 @@ class DynamicFormBuilderViewMixin:
 
     def post(self, request, *args, **kwargs):
         """Retrieve the the dynamic form data"""
-        self.dynamic_fields = {key.strip('jsonfield_'): value for key, value in request.POST.dict().items()
+        self.dynamic_fields = {key.replace('jsonfield_', ''): value for key, value in request.POST.dict().items()
                                if key.startswith('jsonfield_')}
         return super().post(request, *args, **kwargs)
 
