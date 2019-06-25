@@ -24,4 +24,4 @@ class TemplateForm(forms.Form):
         super().__init__()
         for fieldname, value in fields.items():
             # fields inputs are prefixed to be filtered out when posted
-            self.fields[f"jsonfield_{fieldname}"] = forms.CharField(label=fieldname, initial=value)
+            self.fields[f"jsonfield_{fieldname}"] = forms.CharField(label=fieldname, initial=value, required=False)
