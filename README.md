@@ -24,13 +24,78 @@ DYNAMIC_FORM_BUILDER_TARGET = 'your_app'
 ```
 
 
-urlpatterns = [
-    # other urls patterns
-    path('some_string/', include('dynamic_form_builder.urls')),
-]
+# Usage
+
+- In your `models.py`:
+
+```python
+from dynamic_form_builder.models import FormBuilderField
+
+class MyModel(models.Model):
+    # foreign key to the template to select
+    template = FormBuilderField(limit_to_model='mymodel',
+                                null=True, blank=True)
+    # the field to store the filled form
+    my_dyn_field = models.CharField(max_length=2000, null=True, blank=True)
 ```
 
+- In your `views.py`, you will have to use `DynamicFormBuilderViewMixin`:
 
+```python
+from dynamic_form_builder.views import DynamicFormBuilderViewMixin
+
+
+class MyModelCreate(DynamicFormBuilderViewMixin, CreateView):
+    model = models.MyModel
+    form_class = forms.MyModelForm
+    dynamic_field = 'my_dyn_field'
+
+
+class MyModelUpdate(DynamicFormBuilderViewMixin, UpdateView):
+    model = models.MyModel
+    form_class = forms.MyModelForm
+    dynamic_field = 'my_dyn_field'
+
+
+class MyModelDetail(DynamicFormBuilderViewMixin, DetailView):
+    model = models.MyModel
+    dynamic_field = 'my_dyn_field'
+
+```
+
+- In your form template, you will have to add a new tag:
+`overridable_table_form json`:
+
+```
+{% extends "common.html" %}
+{% load overridable_form %}
+
+{% block title %} Post Project {% endblock %}
+
+{% block body %}
+
+    <form action="" method="post" enctype="multipart/form-data" id="postform">
+        <table>
+            {% csrf_token %}
+            {{ form.as_table }}
+        </table>
+        {% overridable_table_form json_form %}
+        <input type="submit" value="Submit" />
+    </form>
+
+{% endblock %}
+```
+
+- For your detail template, acces the dynamic form data trough
+the tag `dyn_form_data`:
+
+```
+{% for field, value in dyn_form_data.items %}
+        <tr>
+            <th>{{ field }} </th> <td>{{ value }}</td>
+        </tr>
+{% endfor %}
+```
 
 # Developement
 Be sure to push migrations after any change into the models, for
